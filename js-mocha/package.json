@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Gilded Rose kata in Javascript with Mocha",
   "scripts": {
-    "test": "mocha -r @babel/register"
+    "test": "mocha -r @babel/register",
+    "lint": "eslint --ext .js .",
+    "lint:fix": "eslint --ext .js . --fix"
   },
   "repository": {
     "type": "git",
@@ -20,8 +22,13 @@
     "url": "https://github.com/emilybache/GildedRose-Refactoring-Kata/issues"
   },
   "homepage": "https://github.com/emilybache/GildedRose-Refactoring-Kata",
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1"
+  },
   "dependencies": {
+    "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
     "@babel/register": "^7.8.3",
     "expect": "^25.1.0",

@@ -17,18 +17,23 @@ describe('Gilded Rose', () => {
       });
       return { ...map, [x]: items };
     }, {});
-    return dayToItems;
+    return {days, dayToItems};
   }
 
+  let days;
   let dayToItems;
+  let store;
 
   before(() => {
-    dayToItems = readDayToItemsFromFile();
+    ({days, dayToItems} = readDayToItemsFromFile());
+    store = new Shop(dayToItems[days[0]]);
   });
 
   it('should foo', () => {
-    const gildedRose = new Shop(dayToItems['29']);
-    const items = gildedRose.updateQuality();
-    expect(items).toEqual(dayToItems['30']);
+    for(let i = 1; i < days.length; i+=1){
+      const items = store.updateQuality();
+      expect(items).toEqual(dayToItems[days[i]]);
+    }
   });
+    
 });

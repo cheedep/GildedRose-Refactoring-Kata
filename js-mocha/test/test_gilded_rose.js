@@ -1,6 +1,7 @@
 import fs from 'fs';
 import expect from 'expect';
-import { Shop, Item } from '../src/gilded_rose';
+import Shop from '../src/gilded_rose';
+import Item from '../src/item';
 
 describe('Gilded Rose', () => {
   function readDayToItemsFromFile() {

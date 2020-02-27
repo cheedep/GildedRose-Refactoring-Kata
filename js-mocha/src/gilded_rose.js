@@ -1,42 +1,42 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable no-continue */
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-underscore-dangle */
+import NonUpdater from './non-updater';
+import BrieUpdater from './brie-updater';
+import BackstagePassesUpdater from './backstage-updater';
+import DefaultUpdater from './default-updater';
 
 export default class Shop {
+  static backstagePasses = 'Backstage passes to a TAFKAL80ETC concert';
+
+  static agedBrie = 'Aged Brie';
+
+  static sulfuras = 'Sulfuras, Hand of Ragnaros';
+
   constructor(items = []) {
     this.items = items;
+    this.defaultUpdater = new DefaultUpdater();
+    const nonUpdater = new NonUpdater();
+    const brieUpdater = new BrieUpdater();
+    const backstagePassesUpdater = new BackstagePassesUpdater();
+    this.updaters = {
+      [Shop.agedBrie]: brieUpdater,
+      [Shop.backstagePasses]: backstagePassesUpdater,
+      [Shop.sulfuras]: nonUpdater
+    };
+  }
+
+  getUpdater(item) {
+    return this.updaters[item.name] || this.defaultUpdater;
   }
 
   updateQuality() {
-    const backstagePasses = 'Backstage passes to a TAFKAL80ETC concert';
-    const agedBrie = 'Aged Brie';
-    const sulfuras = 'Sulfuras, Hand of Ragnaros';
     for (let i = 0; i < this.items.length; i += 1) {
       const item = this.items[i];
-      if (item.name === agedBrie) {
-        item.quality = Math.min(50, item.quality + (item.sellIn > 0 ? 1 : 2));
-        item.sellIn -= 1;
-        continue;
-      } else if (item.name === backstagePasses) {
-        item.sellIn -= 1;
-        item.quality = Math.min(50, item.quality + 1);
-        if (item.sellIn < 10) {
-          item.quality = Math.min(50, item.quality + 1);
-        }
-        if (item.sellIn < 5) {
-          item.quality = Math.min(50, item.quality + 1);
-        }
-        if (item.sellIn < 0) {
-          item.quality = 0;
-        }
-        continue;
-      } else if (item.name === sulfuras) {
-        continue;
-      } else {
-        item.sellIn -= 1;
-        item.quality = Math.max(0, item.quality - (item.sellIn >= 0 ? 1 : 2));
-      }
+      const updater = this.getUpdater(item);
+      updater.update(item);
     }
     return this.items;
   }

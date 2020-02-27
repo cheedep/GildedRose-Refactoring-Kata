@@ -19,14 +19,14 @@ export default class Shop {
         item.sellIn -= 1;
         continue;
       } else if (item.name === backstagePasses) {
-        item.quality = Math.min(50, item.quality + 1);
-        if (item.sellIn < 11) {
-          item.quality = Math.min(50, item.quality + 1);
-        }
-        if (item.sellIn < 6) {
-          item.quality = Math.min(50, item.quality + 1);
-        }
         item.sellIn -= 1;
+        item.quality = Math.min(50, item.quality + 1);
+        if (item.sellIn < 10) {
+          item.quality = Math.min(50, item.quality + 1);
+        }
+        if (item.sellIn < 5) {
+          item.quality = Math.min(50, item.quality + 1);
+        }
         if (item.sellIn < 0) {
           item.quality = 0;
         }
@@ -34,8 +34,8 @@ export default class Shop {
       } else if (item.name === sulfuras) {
         continue;
       } else {
-        item.quality = Math.max(0, item.quality - (item.sellIn > 0 ? 1 : 2));
         item.sellIn -= 1;
+        item.quality = Math.max(0, item.quality - (item.sellIn >= 0 ? 1 : 2));
       }
     }
     return this.items;
